@@ -1,3 +1,6 @@
 # Compiled target folder
 target/
 
+# DB file
+database.mv.db
+
