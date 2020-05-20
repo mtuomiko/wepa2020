@@ -1,4 +1,4 @@
-package projekti;
+package projekti.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,18 @@ public class Person extends AbstractPersistable<Long> {
 
     @OneToMany(mappedBy = "sender")
     private List<Post> sentPosts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sender")
+    private List<Comment> sentComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "person")
+    private List<Skill> skills = new ArrayList<>();
+
+    @OneToMany(mappedBy = "person")
+    private List<Praise> praises = new ArrayList<>();
+
+    @OneToOne
+    private ImageFile imageFile;
 
     @Column(unique = true)
     private String username;
@@ -67,6 +80,5 @@ public class Person extends AbstractPersistable<Long> {
         }
         return true;
     }
-    
-    
+
 }

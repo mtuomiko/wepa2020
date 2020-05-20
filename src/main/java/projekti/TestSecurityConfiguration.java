@@ -13,18 +13,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Profile("default")
+@Profile("test")
 @Configuration
 @EnableWebSecurity
-public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class TestSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Override
+    /*@Override
     protected void configure(HttpSecurity http) throws Exception {
-
+        // poistetaan csrf-tarkistus käytöstä h2-konsolin vuoksi
         http.csrf().disable();
+        // sallitaan framejen käyttö
         http.headers().frameOptions().sameOrigin();
 
         http.authorizeRequests()
@@ -33,11 +34,11 @@ public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .anyRequest().authenticated().and()
                 .formLogin().loginPage("/login").permitAll().and()
                 .logout().permitAll();
-    }
+    }*/
 
     @Override
     public void configure(WebSecurity sec) throws Exception {
-        sec.ignoring().antMatchers("/css/**");
+        sec.ignoring().antMatchers("/**");
     }
 
     @Autowired

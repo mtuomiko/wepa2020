@@ -1,5 +1,7 @@
 package projekti;
 
+import projekti.model.Person;
+import projekti.repository.PersonRepository;
 import java.util.List;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -18,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PersonTest {
+public class PersonControllerTest {
 
     @Autowired
     private PersonRepository personRepository;

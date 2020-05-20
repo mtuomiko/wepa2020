@@ -1,4 +1,4 @@
-package projekti;
+package projekti.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

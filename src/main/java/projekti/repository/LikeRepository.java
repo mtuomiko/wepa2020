@@ -1,8 +1,8 @@
 package projekti.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import projekti.model.Post;
+import projekti.model.Like;
 
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface LikeRepository extends JpaRepository<Like, Long> {
 
 }

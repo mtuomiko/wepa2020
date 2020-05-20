@@ -12,4 +12,9 @@ public class DefaultController {
         model.addAttribute("message", "World!");
         return "index";
     }
+    
+    @GetMapping("/login")
+    public String loginForm() {
+        return "login";
+    }
 }

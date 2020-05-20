@@ -1,5 +1,9 @@
 package projekti;
 
+import projekti.model.Connection;
+import projekti.model.Person;
+import projekti.repository.ConnectionRepository;
+import projekti.repository.PersonRepository;
 import java.util.List;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -17,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ConnectionTest {
+public class ConnectionControllerTest {
 
     @Autowired
     private PersonRepository personRepository;
