@@ -34,14 +34,14 @@ public class ConnectionControllerTest {
 
     @Test
     public void canAddTwoPersonsAndConnectionAndFindThem() throws Exception {
-        mockMvc.perform(post("/people")
+        mockMvc.perform(post("/register")
                 .param("username", "user1")
                 .param("password", "secret")
                 .param("name", "User 1")
                 .param("slug", "user1"))
                 .andExpect(status().is3xxRedirection());
 
-        mockMvc.perform(post("/people")
+        mockMvc.perform(post("/register")
                 .param("username", "user2")
                 .param("password", "secret")
                 .param("name", "User 2")

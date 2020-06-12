@@ -30,7 +30,7 @@ public class PersonControllerTest {
 
     @Test
     public void canAddPersonAndFindIt() throws Exception {
-        mockMvc.perform(post("/people")
+        mockMvc.perform(post("/register")
                 .param("username", "kayttaja")
                 .param("password", "secret")
                 .param("name", "Keijo Käyttäjä")

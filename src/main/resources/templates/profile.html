@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/general :: head(title='Profile')">
+        <title>Title</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <h6>Username</h6>
+                        <span th:text="${person.username}">
+                    </div>
+                    <div>
+                        <h6>Name</h6>
+                        <span th:text="${person.name}">
+                    </div>
+                    <div>
+                        <h6>Slug</h6>
+                        <span th:text="${person.slug}">
+                    </div>
+                    <div th:if="${person.imageFile != null}">
+                        <h6>Profile picture</h6>
+                        <img th:src="@{/files/{id}(id=${person.imageFile.id})}" class="img-fluid" />
+                    </div>
+
+                    <form method="post" th:action="@{/files}" enctype="multipart/form-data">
+                        <input type="file" name="file" id="file"/>
+                        <input type="submit" value="Add or change profile picture"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

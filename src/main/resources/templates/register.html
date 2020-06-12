@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/general :: head(title='Register to Twooter')">
+        <title>Title</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <form name="register-form" th:action="@{/register}" th:object="${person}" method="post">
+                        <fieldset>
+                            <legend>Twooter registration</legend>
+
+                            <div class="form-group">
+                                <label class="d-block" for="username">Username</label>
+                                <input type="text" id="username" th:field="*{username}" />
+                                <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger">>Username errors</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="d-block" for="password">Password</label>
+                                <input type="password" id="password" th:field="*{password}" />
+                                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="alert alert-danger">Password errors</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="d-block" for="name">Name</label>
+                                <input type="text" id="name" th:field="*{name}" />
+                                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger">Name errors</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="d-block" for="slug">Slug</label>
+                                <input type="text" id="slug" th:field="*{slug}" />
+                                <span th:if="${#fields.hasErrors('slug')}" th:errors="*{slug}" class="alert alert-danger">Slug errors</span>
+                                <small class="d-block">Used for profile URLs, e.g. /people/john</small>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Register</button>
+                                <span>Or <a th:href="@{/login}">login</a></span>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

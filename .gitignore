@@ -1,6 +1,6 @@
 # Compiled target folder
 target/
 
-# DB file
+# DB files
 database.mv.db
-
+database.trace.db

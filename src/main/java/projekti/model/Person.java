@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,13 +45,16 @@ public class Person extends AbstractPersistable<Long> {
     private ImageFile imageFile;
 
     @Column(unique = true)
+    @Size(min = 3, max = 50)
     private String username;
 
     private String password;
 
+    @Size(min = 3, max = 255)
     private String name;
 
     @Column(unique = true)
+    @Size(min = 3, max = 20)
     private String slug;
 
     @CreationTimestamp
