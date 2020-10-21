@@ -1,4 +1,4 @@
-package projekti;
+package projekti.controller;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class DefaultController {
 
-    @GetMapping("*")
+    @GetMapping("/")
     public String helloWorld(Model model) {
-        model.addAttribute("message", "World!");
-        return "index";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof AnonymousAuthenticationToken) {
+            return "redirect:/login";
+        }
+        String username = auth.getName();
+        return "redirect:/people/" + username;
     }
 
     @GetMapping("/login")
@@ -22,6 +26,7 @@ public class DefaultController {
         if (auth instanceof AnonymousAuthenticationToken) {
             return "login";
         }
-        return "redirect:/index";   
+        String username = auth.getName();
+        return "redirect:/people/" + username;
     }
 }

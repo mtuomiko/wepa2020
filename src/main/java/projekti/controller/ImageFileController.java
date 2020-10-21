@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,10 @@ public class ImageFileController {
     public String saveImage(
             @RequestParam("file") MultipartFile postFile,
             Authentication authentication) throws IOException {
+
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/";
+        }
 
         String contentType = postFile.getContentType();
         Person person = personRepository.findByUsername(authentication.getName());
@@ -60,7 +65,7 @@ public class ImageFileController {
             }
         }
 
-        return "redirect:index";
+        return "redirect:/";
     }
 
     @GetMapping("/files/{id}")

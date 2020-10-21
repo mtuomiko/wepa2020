@@ -1,5 +1,6 @@
 package projekti.controller;
 
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import projekti.model.Person;
 import projekti.repository.PersonRepository;
 
@@ -31,7 +33,7 @@ public class PersonController {
         if (auth instanceof AnonymousAuthenticationToken) {
             return "register";
         }
-        return "redirect:/index";
+        return "redirect:/";
     }
 
     @PostMapping("/register")
@@ -69,7 +71,20 @@ public class PersonController {
             return "redirect:/index";
         }
         model.addAttribute("person", existingPerson);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        model.addAttribute("connections", existingPerson.getApprovedConnections());
+
         return "profile";
+    }
+
+    @PostMapping("/search")
+    public String searchPeople(Model model, @RequestParam String search) {
+        List<Person> foundPeople = personRepository.findByNameContainingIgnoreCase(search);
+        model.addAttribute("people", foundPeople);
+        return "redirect:/connection";
     }
 
 }

@@ -3,7 +3,7 @@ package projekti.model;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,8 +19,8 @@ public class Skill extends AbstractPersistable<Long> {
     @OneToMany(mappedBy = "skill")
     private List<Praise> praises = new ArrayList<>();
 
-    @ManyToOne
-    private Person person;
+    @ManyToMany
+    private List<Person> persons = new ArrayList<>();
 
     private String name;
 }

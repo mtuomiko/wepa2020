@@ -19,7 +19,10 @@ public class Praise extends AbstractPersistable<Long> {
     private Skill skill;
 
     @ManyToOne
-    private Person person;
+    private Person praiser;
+
+    @ManyToOne
+    private Person praised;
 
     @CreationTimestamp
     private LocalDateTime sendTime;
