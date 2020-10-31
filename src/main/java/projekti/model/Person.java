@@ -86,6 +86,10 @@ public class Person extends AbstractPersistable<Long> {
         return approvedConnections;
     }
 
+    public void removeImageFile() {
+        this.imageFile = null;
+    }
+
     @Override
     public int hashCode() {
         int hash = 3;

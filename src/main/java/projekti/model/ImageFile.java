@@ -24,11 +24,12 @@ public class ImageFile extends AbstractPersistable<Long> {
     private String contentType;
     private Long contentLength;
 
-    // This works locally
-    //@Lob
-    //@Basic(fetch = FetchType.LAZY)
-    
-    // This works on Heroku
-    @Type(type = "org.hibernate.type.BinaryType")
+    // This works locally. Appears to also work on Heroku/PostgreSQL with:
+    // spring.jpa.properties.hibernate.jdbc.use_streams_for_binary=false
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+
+    // This works on Heroku/PostgreSQL
+    // @Type(type = "org.hibernate.type.BinaryType")
     private byte[] content;
 }

@@ -4,6 +4,8 @@
         <title>Title</title>
     </head>
     <body>
+        <nav th:replace="fragments/general :: navbar"></nav>
+
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -24,16 +26,25 @@
                         <img th:src="@{/files/{id}(id=${person.imageFile.id})}" class="img-fluid" />
                     </div>
 
-                    <div th:if="${person.username == #authentication.getPrincipal().getUsername()}">
+
+                    <div th:if="${user != null and person.username == user.username}">
                         <form method="post" th:action="@{/files}" enctype="multipart/form-data">
-                            <input type="file" name="file" id="file"/>
-                            <input type="submit" value="Add or change profile picture"/>
+                            <label class="btn btn-primary" for="file">
+                                Browse <input type="file" name="file" id="file" hidden="true"
+                                              onchange="$('#uploader-filename').html(this.files[0].name)"/>
+                            </label>
+                            <span class="label label-info" id="uploader-filename"></span>
+                            <input type="submit" class="btn btn-primary" value="Add or change profile picture"/>
+                        </form>
+                        <form th:if="${person.imageFile != null}" method="post" th:action="@{/files/{id}/delete(id=${person.imageFile.id})}">
+                            <input type="submit" class="btn btn-primary" value="Delete picture" />
                         </form>
                     </div>
+
                 </div>
             </div>
 
-            <div class="row" th:if="${person.username == #authentication.getPrincipal().getUsername()}">
+            <div class="row" th:if="${user != null and person.username == user.username}">
                 <div class="col">
                     <h5>Connections</h5>
                     <ul>
@@ -46,5 +57,7 @@
                 </div>
             </div>
         </div>
+
+        <div th:replace="fragments/general :: bootstrap-js"></div>
     </body>
 </html>

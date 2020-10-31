@@ -19,6 +19,7 @@ import projekti.model.ImageFile;
 import projekti.model.Person;
 import projekti.repository.ImageFileRepository;
 import projekti.repository.PersonRepository;
+import org.springframework.ui.Model;
 
 @Controller
 public class ImageFileController {
@@ -83,5 +84,24 @@ public class ImageFileController {
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/files/{id}/delete")
+    public String deleteImage(Authentication authentication, @PathVariable Long id, Model model) {
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/";
+        }
+        Optional<ImageFile> optionalFile = imageFileRepository.findById(id);
+        Person person = personRepository.findByUsername(authentication.getName());
+
+        if (optionalFile.isPresent()) {
+            ImageFile file = optionalFile.get();
+            if (person.getUsername() == file.getPerson().getUsername()) {
+                person.removeImageFile();
+                personRepository.save(person);
+                imageFileRepository.delete(file);
+            }
+        }
+        return "redirect:/people/" + person.getSlug();
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import projekti.model.Person;
 import projekti.repository.PersonRepository;
 
 @Controller
+@ControllerAdvice
 public class PersonController {
 
     @Autowired
@@ -39,7 +41,8 @@ public class PersonController {
     @PostMapping("/register")
     public String newRegistration(
             @Valid @ModelAttribute Person person,
-            BindingResult bindingResult) {
+            BindingResult bindingResult
+    ) {
 
         if (bindingResult.hasErrors()) {
             return "register";
@@ -85,6 +88,19 @@ public class PersonController {
         List<Person> foundPeople = personRepository.findByNameContainingIgnoreCase(search);
         model.addAttribute("people", foundPeople);
         return "redirect:/connection";
+    }
+
+    /**
+     * Affects all Controllers by adding currently logged in user to the model.
+     */
+    @ModelAttribute
+    public void populateUser(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof AnonymousAuthenticationToken) {
+            return;
+        }
+        Person person = personRepository.findByUsername(auth.getName());
+        model.addAttribute("user", person);
     }
 
 }

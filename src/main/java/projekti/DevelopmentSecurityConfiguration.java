@@ -24,13 +24,18 @@ public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapt
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable();
+        // 
+        //http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
 
+//        http.authorizeRequests()
+//                .antMatchers("/accounts", "/accounts/**", "/h2-console", "/h2-console/**",
+//                        "/register").permitAll()
+//                .anyRequest().authenticated().and()
+//                .formLogin().loginPage("/login").permitAll().and()
+//                .logout().permitAll();
         http.authorizeRequests()
-                .antMatchers("/accounts", "/accounts/**", "/h2-console", "/h2-console/**",
-                        "/register").permitAll()
-                .anyRequest().authenticated().and()
+                .antMatchers("/**").permitAll().and()
                 .formLogin().loginPage("/login").permitAll().and()
                 .logout().permitAll();
     }
