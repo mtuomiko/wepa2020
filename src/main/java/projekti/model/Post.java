@@ -22,9 +22,6 @@ public class Post extends AbstractPersistable<Long> {
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
-    private Connection connection;
-
-    @ManyToOne
     private Person sender;
 
     @CreationTimestamp

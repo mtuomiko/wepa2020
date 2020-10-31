@@ -25,7 +25,7 @@ public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapt
     protected void configure(HttpSecurity http) throws Exception {
 
         // 
-        //http.csrf().disable();
+        http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
 
 //        http.authorizeRequests()
@@ -35,6 +35,7 @@ public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapt
 //                .formLogin().loginPage("/login").permitAll().and()
 //                .logout().permitAll();
         http.authorizeRequests()
+                .antMatchers("/posts").authenticated()
                 .antMatchers("/**").permitAll().and()
                 .formLogin().loginPage("/login").permitAll().and()
                 .logout().permitAll();

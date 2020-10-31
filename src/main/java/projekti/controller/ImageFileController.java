@@ -97,7 +97,7 @@ public class ImageFileController {
         if (optionalFile.isPresent()) {
             ImageFile file = optionalFile.get();
             if (person.getUsername() == file.getPerson().getUsername()) {
-                person.removeImageFile();
+                person.setImageFile(null);
                 personRepository.save(person);
                 imageFileRepository.delete(file);
             }

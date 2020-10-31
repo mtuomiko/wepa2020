@@ -25,9 +25,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @AllArgsConstructor
 public class Connection extends AbstractPersistable<Long> {
 
-    @OneToMany(mappedBy = "connection")
-    private List<Post> posts = new ArrayList<>();
-
     @ManyToOne
     private Person requester;
 

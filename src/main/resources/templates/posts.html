@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/general :: head(title='Twooter')">
+        <title>Title</title>
+    </head>
+    <body>
+        <nav th:replace="fragments/general :: navbar"></nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <form name="post-form" th:action="@{/posts}" method="post">
+                        <div class="form-group">
+                            <label for="content">Create new post</label>
+                            <input type="text" class="form-control" name="content" id="content" placeholder="Your thoughts about stuff" />
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                    <div th:if="${posts.empty}">No posts yet!</div>
+                    <div th:unless="${posts.empty}">
+                        <div th:each="post: ${posts}" class="card p-2">
+                            <h5 class="card-title" th:text="${post.sender.name}"></h5>
+                            <h6 class="card-subtitle mb-2 text-muted" th:text="${#temporals.format(post.sendTime, 'dd.MM.yyyy HH:mm')}"></h6>
+                            <p class="card-text" th:text="${post.content}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

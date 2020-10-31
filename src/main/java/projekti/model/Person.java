@@ -86,8 +86,19 @@ public class Person extends AbstractPersistable<Long> {
         return approvedConnections;
     }
 
-    public void removeImageFile() {
-        this.imageFile = null;
+    public List<Person> getApprovedContacts() {
+        List<Person> contacts = new ArrayList<>();
+        for (Connection connection : requestedConnections) {
+            if (connection.getApproved() != null) {
+                contacts.add(connection.getOtherParty());
+            }
+        }
+        for (Connection connection : receivedConnections) {
+            if (connection.getApproved() != null) {
+                contacts.add(connection.getOtherParty());
+            }
+        }
+        return contacts;
     }
 
     @Override
