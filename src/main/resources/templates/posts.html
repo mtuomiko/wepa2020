@@ -9,19 +9,27 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <form name="post-form" th:action="@{/posts}" method="post">
+                    <form name="post-form" th:action="@{/posts}" th:object="${post}" method="post">
                         <div class="form-group">
                             <label for="content">Create new post</label>
                             <input type="text" class="form-control" name="content" id="content" placeholder="Your thoughts about stuff" />
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <div>
+                                <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="alert alert-danger">Content errors</span>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
                         </div>
                     </form>
+
                     <div th:if="${posts.empty}">No posts yet!</div>
                     <div th:unless="${posts.empty}">
-                        <div th:each="post: ${posts}" class="card p-2">
+                        <div th:each="post: ${posts}" class="card p-2 my-2">
                             <h5 class="card-title" th:text="${post.sender.name}"></h5>
                             <h6 class="card-subtitle mb-2 text-muted" th:text="${#temporals.format(post.sendTime, 'dd.MM.yyyy HH:mm')}"></h6>
                             <p class="card-text" th:text="${post.content}"></p>
+                            <p>Likes <span th:text="${#lists.size(post.likes)}"></span></p>
+                            <form th:action="@{/posts/{id}/like(id=${post.id})}" method="post">
+                                <button type="submit" class="btn btn-primary">Like</button>
+                            </form>
                         </div>
                     </div>
                 </div>

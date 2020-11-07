@@ -14,9 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import projekti.model.Like;
 import projekti.model.Person;
 import projekti.model.Post;
+import projekti.repository.LikeRepository;
 import projekti.repository.PersonRepository;
 import projekti.repository.PostRepository;
 
@@ -29,8 +32,11 @@ public class PostController {
     @Autowired
     private PersonRepository personRepository;
 
-    @GetMapping("/posts")
-    public String getPostStream(Model model) {
+    @Autowired
+    private LikeRepository likeRepository;
+
+    @ModelAttribute
+    public void addPostsToModel(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Person user = personRepository.findByUsername(auth.getName());
         List<Person> contacts = user.getApprovedContacts();
@@ -40,6 +46,14 @@ public class PostController {
         List<Post> posts = postRepository.findBySenderIn(contacts, pageable);
 
         model.addAttribute("posts", posts);
+
+        List<Like> likes = likeRepository.findBySenderAndPostIn(user, posts);
+
+        //model.addAttribute("likes", likes);
+    }
+
+    @GetMapping("/posts")
+    public String getPostStream(@ModelAttribute Post post) {
         return "posts";
     }
 
@@ -56,4 +70,5 @@ public class PostController {
 
         return "redirect:/posts";
     }
+
 }
