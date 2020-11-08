@@ -2,6 +2,7 @@ package projekti.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -48,8 +49,10 @@ public class PostController {
         model.addAttribute("posts", posts);
 
         List<Like> likes = likeRepository.findBySenderAndPostIn(user, posts);
-
-        //model.addAttribute("likes", likes);
+        List<Post> likePosts = likes.stream()
+                .map(like -> like.getPost())
+                .collect(Collectors.toList());
+        model.addAttribute("likePosts", likePosts);
     }
 
     @GetMapping("/posts")
