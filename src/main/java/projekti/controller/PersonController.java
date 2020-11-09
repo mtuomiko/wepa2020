@@ -83,7 +83,7 @@ public class PersonController {
     public String getProfile(Model model, @PathVariable String slug) {
         Person existingPerson = personRepository.findBySlug(slug);
         if (existingPerson == null) {
-            return "redirect:/index";
+            return "redirect:/";
         }
         model.addAttribute("person", existingPerson);
 
@@ -112,11 +112,11 @@ public class PersonController {
     public String addSkill(@PathVariable String slug, @RequestParam String name) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.getName() != slug) {
-            return "redirect:/index";
+            return "redirect:/";
         }
         Person existingPerson = personRepository.findBySlug(slug);
         if (existingPerson == null) {
-            return "redirect:/index";
+            return "redirect:/";
         }
         if (name == null || name.isEmpty()) {
             return "redirect:/people/" + slug;
@@ -140,7 +140,7 @@ public class PersonController {
         Person existingPerson = personRepository.findBySlug(slug);
         Skill existingSkill = skillRepository.getOne(id);
         if (existingPerson == null || existingSkill == null) {
-            return "redirect:/index";
+            return "redirect:/";
         }
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
