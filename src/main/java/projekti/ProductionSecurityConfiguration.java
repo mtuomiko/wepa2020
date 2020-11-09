@@ -24,14 +24,19 @@ public class ProductionSecurityConfiguration extends WebSecurityConfigurerAdapte
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // poistetaan csrf-tarkistus käytöstä h2-konsolin vuoksi
-        http.csrf().disable();
+        //http.csrf().disable();
         // sallitaan framejen käyttö
-        http.headers().frameOptions().sameOrigin();
+        //http.headers().frameOptions().sameOrigin();
 
+//        http.authorizeRequests()
+//                .antMatchers("/accounts", "/accounts/**", "/h2-console", "/h2-console/**",
+//                        "/register").permitAll()
+//                .anyRequest().authenticated().and()
+//                .formLogin().loginPage("/login").permitAll().and()
+//                .logout().permitAll();
         http.authorizeRequests()
-                .antMatchers("/accounts", "/accounts/**", "/h2-console", "/h2-console/**",
-                        "/register").permitAll()
-                .anyRequest().authenticated().and()
+                .antMatchers("/posts").authenticated()
+                .antMatchers("/**").permitAll().and()
                 .formLogin().loginPage("/login").permitAll().and()
                 .logout().permitAll();
     }
