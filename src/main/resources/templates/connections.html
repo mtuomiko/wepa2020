@@ -4,63 +4,65 @@
         <title>Title</title>
     </head>
     <body>
-        <nav th:replace="fragments/general :: navbar"></nav>
-        
+        <nav th:replace="fragments/navigation :: navbar"></nav>
+
         <div class="container">
-            <div class="col">
-                <h4>Connections</h4>
+            <div class="row">
+                <div class="col">
+                    <h4>Connections</h4>
 
-                <div th:each="connection: ${connections}">
-                    <div th:if="${connection.receiver.username == #authentication.getPrincipal().getUsername()}">
-                        <a th:href="@{/people/{slug}(slug=${connection.requester.slug})}"><span th:text="${connection.requester.name}"></span></a>
-                        <div th:if="${connection.approved}">
-                            <form th:action="@{/connection/{id}(id=${connection.id})}" method="delete">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </div>
-                        <div th:unless="${connection.approved}">
-                            <form th:action="@{/connection/{id}(id=${connection.id})}" method="post">
-                                <button type="submit" class="btn btn-primary">Approve</button>
-                            </form>
-                            <form th:action="@{/connection/{id}/remove(id=${connection.id})}" method="post">
-                                <button type="submit" class="btn btn-danger">Deny</button>
-                            </form>
-                        </div>
+                    <div th:each="connection: ${connections}">
+                        <div th:if="${connection.receiver.username == #authentication.getPrincipal().getUsername()}" class="card">
+                            <a th:href="@{/people/{slug}(slug=${connection.requester.slug})}"><span th:text="${connection.requester.name}"></span></a>
+                            <div th:if="${connection.approved}" class="btn-group">
+                                <form th:action="@{/connection/{id}(id=${connection.id})}" method="delete">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                            <div th:unless="${connection.approved}" class="btn-group">
+                                <form th:action="@{/connection/{id}(id=${connection.id})}" method="post">
+                                    <button type="submit" class="btn btn-primary">Approve</button>
+                                </form>
+                                <form th:action="@{/connection/{id}/remove(id=${connection.id})}" method="post">
+                                    <button type="submit" class="btn btn-danger">Deny</button>
+                                </form>
+                            </div>
 
-                    </div>
-                    <div th:if="${connection.requester.username == #authentication.getPrincipal().getUsername()}">
-                        <a th:href="@{/people/{slug}(slug=${connection.receiver.slug})}"><span th:text="${connection.receiver.name}"></span></a>
-                        <div th:if="${connection.approved}">
-                            <form th:action="@{/connection/{id}/remove(id=${connection.id})}" method="post">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
                         </div>
-                        <div th:unless="${connection.approved}">
-                            <form th:action="@{/connection/{id}/remove(id=${connection.id})}" method="post">
-                                <button type="submit" class="btn btn-danger">Cancel</button>
-                            </form>
+                        <div th:if="${connection.requester.username == #authentication.getPrincipal().getUsername()}" class="card">
+                            <a th:href="@{/people/{slug}(slug=${connection.receiver.slug})}"><span th:text="${connection.receiver.name}"></span></a>
+                            <div th:if="${connection.approved}">
+                                <form th:action="@{/connection/{id}/remove(id=${connection.id})}" method="post">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                            <div th:unless="${connection.approved}">
+                                <form th:action="@{/connection/{id}/remove(id=${connection.id})}" method="post">
+                                    <button type="submit" class="btn btn-danger">Cancel request</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
+
+                    <h5>Find people</h5>
+                    <form th:action="@{/connection}" method="get">
+                        <label class="d-block" for="search">Search string</label>
+                        <input type="text" id="search" name="search" />
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+
+                    <h4>Found people</h4>
+                    <ul>
+                        <li th:each="person: ${people}">
+                            Name: <span th:text="${person.name}"></span>
+                            Username: <span th:text="${person.username}"></span>
+                            <form th:action="@{/connection}" method="post">
+                                <input type="hidden" th:value="${person.username}" name="receiverUsername" />
+                                <button type="submit" class="btn btn-primary">Add connection</button>
+                            </form>
+                        </li>
+                    </ul>
                 </div>
-
-                <h5>Find people</h5>
-                <form th:action="@{/connection}" method="get">
-                    <label class="d-block" for="search">Search string</label>
-                    <input type="text" id="search" name="search" />
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </form>
-
-                <h4>Found people</h4>
-                <ul>
-                    <li th:each="person: ${people}">
-                        Name: <span th:text="${person.name}"></span>
-                        Username: <span th:text="${person.username}"></span>
-                        <form th:action="@{/connection}" method="post">
-                            <input type="hidden" th:value="${person.username}" name="receiverUsername" />
-                            <button type="submit" class="btn btn-primary">Add connection</button>
-                        </form>
-                    </li>
-                </ul>
             </div>
         </div>
     </body>

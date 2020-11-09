@@ -14,7 +14,7 @@ public class DefaultController {
     public String helloWorld(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth instanceof AnonymousAuthenticationToken) {
-            return "redirect:/login";
+            return "redirect:/search";
         }
         String username = auth.getName();
         return "redirect:/people/" + username;

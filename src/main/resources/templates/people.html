@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/general :: head(title='People')">
+        <title>Title</title>
+    </head>
+    <body>
+        <nav th:replace="fragments/navigation :: navbar"></nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h4>People</h4>
+
+                    <div class="list-group">
+                        <a th:each="person: ${people}" th:text="${person.name}" th:href="@{/people/{slug}(slug=${person.slug})}" class="list-group-item"></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

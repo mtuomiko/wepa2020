@@ -4,15 +4,15 @@
         <title>Title</title>
     </head>
     <body>
-        <nav th:replace="fragments/general :: navbar"></nav>
+        <nav th:replace="fragments/navigation :: navbar"></nav>
 
         <div class="container">
             <div class="row">
                 <div class="col">
                     <form name="post-form" th:action="@{/posts}" th:object="${post}" method="post">
                         <div class="form-group">
-                            <label for="content">Create new post</label>
-                            <input type="text" class="form-control" name="content" id="content" placeholder="Your thoughts about stuff" />
+                            <label for="content"><h5>Create new post</h5></label>
+                            <textarea class="form-control" name="content" id="content" placeholder="Your thoughts about stuff"></textarea>
                             <div>
                                 <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="alert alert-danger">Content errors</span>
                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -33,6 +33,22 @@
                                 </form>
                             </div>
 
+                            <form name="comment-form" th:action="@{/posts/{id}/comment(id=${post.id})}" th:object="${comment}" method="post">
+                                <div class="form-group">
+                                    <label for="content"><h5>Comment</h5></label>
+                                    <textarea class="form-control" name="content" id="content" placeholder="Post comment"></textarea>
+                                    <div>
+                                        <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="alert alert-danger">Content errors</span>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div th:each="comment: ${post.comments}">
+                                <div class="card">
+                                    <span th:text="${comment.content}"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

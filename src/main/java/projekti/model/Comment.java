@@ -3,6 +3,7 @@ package projekti.model;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,5 +25,6 @@ public class Comment extends AbstractPersistable<Long> {
     @CreationTimestamp
     private LocalDateTime sendTime;
 
+    @NotEmpty(message = "Please enter comment")
     private String content;
 }

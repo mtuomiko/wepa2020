@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import projekti.model.Comment;
 import projekti.model.Like;
 import projekti.model.Person;
 import projekti.model.Post;
+import projekti.repository.CommentRepository;
 import projekti.repository.LikeRepository;
 import projekti.repository.PersonRepository;
 import projekti.repository.PostRepository;
@@ -35,6 +37,9 @@ public class PostController {
 
     @Autowired
     private LikeRepository likeRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @ModelAttribute
     public void addPostsToModel(Model model) {
@@ -56,12 +61,12 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public String getPostStream(@ModelAttribute Post post) {
+    public String getPostStream(@ModelAttribute Post post, @ModelAttribute Comment comment) {
         return "posts";
     }
 
     @PostMapping("/posts")
-    public String createNewPost(@Valid @ModelAttribute Post post, BindingResult bindingResult) {
+    public String createNewPost(@Valid @ModelAttribute Post post, @ModelAttribute Comment comment, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "posts";
         }
@@ -70,6 +75,25 @@ public class PostController {
 
         post.setSender(user);
         postRepository.save(post);
+
+        return "redirect:/posts";
+    }
+
+    @PostMapping("/posts/{id}/comment")
+    public String addComment(@PathVariable Long id, @Valid @ModelAttribute Comment comment, @ModelAttribute Post post, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "posts";
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Person user = personRepository.findByUsername(auth.getName());
+
+        Post foundPost = postRepository.getOne(id);
+        if (foundPost != null) {
+            comment.setPost(foundPost);
+            comment.setSender(user);
+            commentRepository.save(comment);
+        }
 
         return "redirect:/posts";
     }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+        <meta charset="UTF-8" />
+        <title>Navigation</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    </head>
+    <body>
+        <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+
+            <a th:if="${user}" class="navbar-brand" th:href="@{/people/{slug}(slug=${user.slug})}">My profile</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <th:block sec:authorize="isAuthenticated()">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/posts}">Posts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/connection}">Connections</a>
+                        </li>
+                    </th:block>
+
+                    <form th:action="@{/search}" class="form-inline my-2 my-lg-0" method="get">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search people">
+                            <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+                        </input>
+                    </form>
+                </ul>
+
+
+
+                <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+                    <input class="btn btn-primary" type="submit" value="Logout"/>
+                </form>
+
+                <a sec:authorize="isAnonymous()" class="btn btn-primary" th:href="@{/login}">Login</a>
+
+            </div>
+        </nav>
+    </body>
+</html>

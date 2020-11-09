@@ -4,23 +4,11 @@
         <title>Title</title>
     </head>
     <body>
-        <nav th:replace="fragments/general :: navbar"></nav>
+        <nav th:replace="fragments/navigation :: navbar"></nav>
 
         <div class="container">
             <div class="row">
-                <div class="col">
-                    <div>
-                        <h6>Username</h6>
-                        <span th:text="${person.username}"></span>
-                    </div>
-                    <div>
-                        <h6>Name</h6>
-                        <span th:text="${person.name}"></span>
-                    </div>
-                    <div>
-                        <h6>Slug</h6>
-                        <span th:text="${person.slug}"></span>
-                    </div>
+                <div class="col-4">
                     <div th:if="${person.imageFile != null}">
                         <h6>Profile picture</h6>
                         <img th:src="@{/files/{id}(id=${person.imageFile.id})}" class="img-fluid" />
@@ -40,8 +28,25 @@
                             <input type="submit" class="btn btn-primary" value="Delete picture" />
                         </form>
                     </div>
+                </div>
+                <div class="col-8">
+                    <div>
+                        <h6>Username</h6>
+                        <span th:text="${person.username}"></span>
+                    </div>
+                    <div>
+                        <h6>Name</h6>
+                        <span th:text="${person.name}"></span>
+                    </div>
+                    <div>
+                        <h6>Slug</h6>
+                        <span th:text="${person.slug}"></span>
+                    </div>
 
                 </div>
+
+
+
             </div>
 
             <div class="row" th:if="${user != null and person.username == user.username}">
@@ -55,6 +60,31 @@
                     </ul>
                     <a th:href="@{/connection}">Edit connections</a>
                 </div>
+            </div>
+
+            <div>
+                <h3>Skills</h3>
+                <form th:if="${user != null and user.username == person.username}"
+                      name="skill-form" th:action="@{/people/{slug}/skill(slug=${person.slug})}" method="post">
+                    <div class="form-group">
+                        <label for="content"><h5>Add new skill</h5></label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Skill" />
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+                <h5>Top 3 skills</h5>
+                <ul>
+                    <li th:each="skill: ${skills}">
+                        <span th:text="${skill.name}"></span>                                
+                        <form sec:authorize="isAuthenticated()"
+                              th:action="@{/people/{slug}/skill/{id}/praise(slug=${person.slug}, id=${skill.id})}" 
+                              method="post">
+                            <!--<button th:text="${#lists.contains(likeSkills, skill)} ? 'Unlike' : 'Like'" type="submit" class="btn btn-primary btn-sm">Like</button>-->
+                            <button th:text="Like" type="submit" class="btn btn-primary btn-sm">Like</button>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </div>
 
